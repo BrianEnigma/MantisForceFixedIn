@@ -1,4 +1,4 @@
-#ForceFixedIn - Version 1.0
+#ForceFixedIn
 
 Copyright 2010, Brian Enigma, <http://netninja.com/projects/forcefixedin/>
 
