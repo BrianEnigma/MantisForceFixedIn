@@ -1,8 +1,9 @@
 <?php
 /**
 ForceFixedIn
-Copyright 2010, Brian Enigma <brian@netninja.com>, http://netninja.com
-$Id: ForceFixedIn.php 135 2010-03-06 18:47:25Z briane $
+Original version copyright 2010, Brian Enigma, http://netninja.com/projects/forcefixedin/
+
+Bug fixes and a better method of raising the error contributed by Vladimir Dusa, February 2014
 
 ForceFixedIn is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@ along with MantisBT.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-/**
- * requires version_api
- */
-require_once( 'version_api.php' );
 class ForceFixedInPlugin extends MantisPlugin 
 {
  
@@ -47,7 +44,7 @@ class ForceFixedInPlugin extends MantisPlugin
     function checkUpdate($eventName, $bug) 
     {
         // If not Resolved/Fixed, we don't need to block anything. Chain next plugin.
-        if (($bug->status != RESOLVED) || ($bug->resolution != FIXED))
+        if (($bug->status != RESOLVED && $bug->status != TEST) || ($bug->resolution != FIXED))
             return $bug;
         // Check if version is blank. Succeed (chain next plugin) if filled in.
         if (strlen($bug->fixed_in_version) > 0)
@@ -62,14 +59,13 @@ class ForceFixedInPlugin extends MantisPlugin
         // fixed, has no fixed in version, but one or more versions exist for the
         // project.  Abort the update!
         $this->raiseError();
+        return null;
     }
 
     function raiseError()
     {
-        // This is probably not the intention of ERROR_VERSION_NOT_FOUND, but it
-        // works for our purposes of aborting the update.
-        error_parameters("****Version must be entered for resolved+fixed issues****");
-		trigger_error(ERROR_VERSION_NOT_FOUND, ERROR);
+        error_parameters(lang_get( 'fixed_in_version' ));
+		    trigger_error(ERROR_EMPTY_FIELD, ERROR);
     }
 }
 ?>
