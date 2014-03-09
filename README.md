@@ -1,6 +1,6 @@
 #ForceFixedIn - Version 1.0
 
-Copyright 2010, Brian Enigma <brian@netninja.com>, http://netninja.com
+Copyright 2010, Brian Enigma, <http://netninja.com/projects/forcefixedin/>
 
 Licensed under the GNU General Public License.
 
